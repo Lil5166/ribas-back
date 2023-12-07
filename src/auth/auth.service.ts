@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from '../dto/UserDto';
+import { CreateUserDto } from '../dto/CreateUserDto';
 import { AdminDto } from '../dto/AdminDto';
 
 @Injectable()
@@ -68,7 +68,7 @@ export class AuthService {
     };
   }
 
-  async register (body: UserDto) {
+  async register (body: CreateUserDto) {
     const { password, ...securedUser } = body;
     const user = await this.prismaService.user.findUnique({
       where: {

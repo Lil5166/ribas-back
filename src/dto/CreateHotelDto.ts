@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class HotelDto {
+export class CreateHotelDto {
   @IsOptional()
   @IsString()
     description?: string;
