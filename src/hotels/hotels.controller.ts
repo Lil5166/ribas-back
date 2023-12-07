@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../security/jwtAuthGuard';
 import { HotelDto } from '../dto/HotelDto';
 import { RoomDto } from '../dto/RoomDto';
 import { AdminGuard } from '../security/adminGuard';
+import { HotelByIdPipe } from '../pipes/HotelByIdPipe';
 
 @Controller('/hotel')
 export class HotelsController {
@@ -27,7 +28,7 @@ export class HotelsController {
   }
 
   @Get('/:hotelId')
-  getById (@Param('hotelId') hotelId: string) {
+  getById (@Param('hotelId', HotelByIdPipe) hotelId: string) {
     return this.hotelsService.getById(hotelId);
   }
 }

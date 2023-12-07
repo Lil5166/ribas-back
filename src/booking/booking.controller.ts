@@ -3,7 +3,7 @@ import { UserGuard } from '../security/userGuard';
 import { JwtAuthGuard } from '../security/jwtAuthGuard';
 import { BookingDto } from '../dto/BookingDto';
 import { BookingService } from './booking.service';
-import { RoomIdPipePipe } from '../pipes/roomIdPipe';
+import { RoomByIdPipe } from '../pipes/RoomByIdPipe';
 
 @Controller('/booking')
 export class BookingController {
@@ -14,7 +14,7 @@ export class BookingController {
   booking (
     @Req() req,
     @Body() body: BookingDto,
-    @Param('roomId', RoomIdPipePipe) roomId: string
+    @Param('roomId', RoomByIdPipe) roomId: string
   ) {
     return this.bookingService.booking(body, req.user.id, roomId);
   }
