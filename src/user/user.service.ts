@@ -20,4 +20,12 @@ export class UserService {
   getAll () {
     return this.prismaService.user.findMany();
   }
+
+  getBookingsByUserId (userId: string) {
+    return this.prismaService.booking.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }

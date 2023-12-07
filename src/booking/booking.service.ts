@@ -7,7 +7,7 @@ export class BookingService {
   constructor (private readonly prismaService: PrismaService) {}
 
   async booking (body: BookingDto, userId: string, roomId: string) {
-    const bookings = await this.prismaService.room.findFirst({
+    const booking = await this.prismaService.room.findFirst({
       where: {
         id: roomId,
         booking: {
@@ -31,7 +31,7 @@ export class BookingService {
         },
       },
     });
-    if (bookings) {
+    if (booking) {
       throw new BadRequestException('Booking with such period is already exist');
     }
 

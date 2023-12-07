@@ -21,4 +21,9 @@ export class UserController {
     return this.userService.getAll();
   }
 
+  @UseGuards(JwtAuthGuard, UserGuard)
+  @Get('/bookings')
+  getBookingsByUserId (@Req() req) {
+    return this.userService.getBookingsByUserId(req.user.id);
+  }
 }
