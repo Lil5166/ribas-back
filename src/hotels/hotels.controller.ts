@@ -28,7 +28,12 @@ export class HotelsController {
   }
 
   @Get('/:hotelId')
-  getById (@Param('hotelId', HotelByIdPipe) hotelId: string) {
+  get (@Param('hotelId', HotelByIdPipe) hotelId: string) {
     return this.hotelsService.getById(hotelId);
+  }
+
+  @Get('/:hotelId/rooms')
+  getRooms (@Param('hotelId', HotelByIdPipe) hotelId: string) {
+    return this.hotelsService.getRoomsById(hotelId);
   }
 }

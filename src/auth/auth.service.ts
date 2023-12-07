@@ -78,7 +78,8 @@ export class AuthService {
     if (user) throw new HttpException('User already registered', HttpStatus.BAD_REQUEST);
 
     const hashedPassword = await this.hashPassword(password);
-    await this.prismaService.user.create({
+
+    return this.prismaService.user.create({
       data: {
         password: hashedPassword,
         ...securedUser,
@@ -113,5 +114,5 @@ export class AuthService {
     });
 
     return this.getAccessToken(newAdmin.id);
-  };
+  }
 }

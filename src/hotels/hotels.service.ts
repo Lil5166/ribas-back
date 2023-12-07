@@ -55,4 +55,12 @@ export class HotelsService {
       },
     });
   }
+
+  getRoomsById (hotelId: string) {
+    return this.prismaService.room.findMany({
+      where: {
+        hotelId,
+      },
+    });
+  }
 }

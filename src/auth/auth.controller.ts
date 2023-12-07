@@ -4,6 +4,7 @@ import { LocalAuthGuard } from '../security/localAuthGuard';
 import { UserDto } from '../dto/UserDto';
 import { JwtAuthGuard } from '../security/jwtAuthGuard';
 import { AdminDto } from '../dto/AdminDto';
+
 @Controller('/auth')
 export class AuthController {
   constructor (
