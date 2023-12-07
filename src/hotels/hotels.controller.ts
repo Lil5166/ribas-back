@@ -21,7 +21,7 @@ export class HotelsController {
 
   @Get()
   getAll (@Query('location') location: string) {
-    return this.hotelsService.findAllHotels(location);
+    return this.hotelsService.getAllHotels(location);
   }
 
   @Get('/:hotelId')
@@ -40,11 +40,6 @@ export class HotelsController {
     return this.hotelsService.updateHotelById(hotelId, body);
   }
 
-  @Get('/:hotelId/rooms')
-  getRooms (@Param('hotelId', HotelByIdPipe) hotelId: string) {
-    return this.hotelsService.getRoomsById(hotelId);
-  }
-
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('/:hotelId/rooms')
   createRoom (
@@ -55,15 +50,31 @@ export class HotelsController {
     return this.hotelsService.createRoom(hotelId, body);
   }
 
+  @Get('/:hotelId/rooms')
+  getRooms (@Param('hotelId', HotelByIdPipe) hotelId: string) {
+    return this.hotelsService.getRoomsByHotelId(hotelId);
+  }
+
+  @Get('/:hotelId/rooms/:roomId')
+  async getRoom (
+    @Param('hotelId', HotelByIdPipe) hotelId: string,
+    @Param('roomId', RoomByIdPipe) roomId: string,
+  ) {
+    await this.hotelsService.checkIsRoomInHotel(hotelId, roomId);
+    return this.hotelsService.getRoomById(roomId);
+  }
+
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Patch('/:hotelId/rooms/:roomId')
-  updateRoom (
+  async updateRoom (
     @Req() req,
     @Param('hotelId', HotelByIdPipe) hotelId: string,
     @Param('roomId', RoomByIdPipe) roomId: string,
     @Body() body: UpdateRoomDto,
   ) {
     this.hotelsService.checkAdminHotel(req.user.hotelId, hotelId);
+    await this.hotelsService.checkIsRoomInHotel(hotelId, roomId);
+
     return this.hotelsService.updateRoomById(roomId, body);
   }
 }

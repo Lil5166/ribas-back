@@ -40,7 +40,7 @@ export class HotelsService {
     });
   }
 
-  async findAllHotels (location: string) {
+  async getAllHotels (location: string) {
     return this.prismaService.hotel.findMany({
       where: {
         location: {
@@ -73,10 +73,18 @@ export class HotelsService {
     });
   };
 
-  getRoomsById (hotelId: string) {
+  getRoomsByHotelId (hotelId: string) {
     return this.prismaService.room.findMany({
       where: {
         hotelId,
+      },
+    });
+  }
+
+  getRoomById (roomId: string) {
+    return this.prismaService.room.findFirst({
+      where: {
+        id: roomId,
       },
     });
   }
@@ -88,5 +96,18 @@ export class HotelsService {
       },
       data,
     });
+  }
+
+  async checkIsRoomInHotel (hotelId: string, roomId: string) {
+    const room = await this.prismaService.room.findFirst({
+      where: {
+        id: roomId,
+        hotelId,
+      },
+    });
+
+    if (!room) {
+      throw new BadRequestException('Room with such id is not found in this hotel');
+    }
   }
 }
