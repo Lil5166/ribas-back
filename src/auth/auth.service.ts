@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -75,7 +75,7 @@ export class AuthService {
         email: securedUser.email,
       },
     });
-    if (user) throw new HttpException('User already registered', HttpStatus.BAD_REQUEST);
+    if (user) throw new BadRequestException('User already registered');
 
     const hashedPassword = await this.hashPassword(password);
 
@@ -102,7 +102,7 @@ export class AuthService {
       },
     );
     if (admin) {
-      throw new HttpException('Administrator is already exist', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Administrator is already exist');
     }
 
     const hashedPassword = await this.hashPassword(password);

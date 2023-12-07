@@ -31,6 +31,7 @@ model Hotel {
   title         String
   location      String
   description   String?
+  photo         String?
   rooms         Room[]
   administrator Administrator?
 }
@@ -42,6 +43,7 @@ model Room {
   booking     RoomsBookings[]
   price       Int
   description String?
+  photo       String?
   rooms       Int
   beds        Int
 }

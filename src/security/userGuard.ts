@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -12,7 +12,10 @@ export class UserGuard implements CanActivate {
         id: request.user.id,
       },
     });
-    if (!user) throw new HttpException('You dont have permission to perform this action', HttpStatus.FORBIDDEN);
+    if (!user) {
+      throw new ForbiddenException('You dont have permission to perform this action');
+    }
+    
     return true;
   }
 }

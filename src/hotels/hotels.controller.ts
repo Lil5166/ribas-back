@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { HotelsService } from './hotels.service';
 import { JwtAuthGuard } from '../security/jwtAuthGuard';
+import { HotelByIdPipe } from '../pipes/HotelByIdPipe';
+import { AdminGuard } from '../security/adminGuard';
+import { HotelsService } from './hotels.service';
 import { HotelDto } from '../dto/HotelDto';
 import { RoomDto } from '../dto/RoomDto';
-import { AdminGuard } from '../security/adminGuard';
-import { HotelByIdPipe } from '../pipes/HotelByIdPipe';
 
 @Controller('/hotel')
 export class HotelsController {
@@ -17,9 +17,12 @@ export class HotelsController {
   }
 
   @UseGuards(JwtAuthGuard, AdminGuard)
-  @Post('/create-room')
-  createRoom (@Req() req, @Body() body: RoomDto) {
-    return this.hotelsService.createRoom(body, req.user.hotelId);
+  @Post('/:hotelId/create-room')
+  createRoom (
+    @Req() req,
+    @Param('hotelId') hotelId: string,
+    @Body() body: RoomDto) {
+    return this.hotelsService.createRoom(req.user.hotelId, hotelId, body);
   }
 
   @Get()

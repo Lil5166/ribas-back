@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { HotelDto } from '../dto/HotelDto';
 import { PrismaService } from '../prisma.service';
 import { RoomDto } from '../dto/RoomDto';
@@ -14,7 +14,7 @@ export class HotelsService {
       },
     });
     if (hotel) {
-      throw new HttpException('Hotel is already exist', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Hotel is already exist');
     }
 
     return this.prismaService.hotel.create({
@@ -29,7 +29,11 @@ export class HotelsService {
     });
   }
 
-  async createRoom (body: RoomDto, hotelId: string) {
+  async createRoom (adminHotelId: string, hotelId: string, body: RoomDto) {
+    if (adminHotelId !== hotelId) {
+      throw new ForbiddenException('You have not permission to perform this action');
+    }
+
     return this.prismaService.room.create({
       data: {
         ...body,

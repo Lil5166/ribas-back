@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BookingDto } from '../dto/BookingDto';
 import { PrismaService } from '../prisma.service';
 
@@ -32,7 +32,7 @@ export class BookingService {
       },
     });
     if (bookings) {
-      throw new HttpException('Booking with such period is already exist', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Booking with such period is already exist');
     }
 
     const room = await this.prismaService.room.findFirst({
