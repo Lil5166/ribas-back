@@ -6,6 +6,7 @@ import { RoomDto } from '../dto/RoomDto';
 @Injectable()
 export class HotelsService {
   constructor (private readonly prismaService: PrismaService) {}
+
   async createHotel (body: HotelDto, adminId: string) {
     const hotel = await this.prismaService.hotel.findFirst({
       where: {
@@ -32,15 +33,23 @@ export class HotelsService {
       },
     });
   };
-  // async findAll (location: string) {
-  //   return this.prismaService.hotel.findMany({
-  //     where: {
-  //       location: {
-  //         contains: location,
-  //         mode: 'default',
-  //       },
-  //     },
-  //   });
-  // }
+
+  async findAll (location: string) {
+    return this.prismaService.hotel.findMany({
+      where: {
+        location: {
+          contains: location,
+        },
+      },
+    });
+  }
+
+  getById (id: string) {
+    return this.prismaService.hotel.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
 
 }
