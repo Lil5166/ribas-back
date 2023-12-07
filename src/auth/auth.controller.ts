@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../security/localAuthGuard';
 import { UserDto } from '../dto/UserDto';
 import { JwtAuthGuard } from '../security/jwtAuthGuard';
+import { AdminDto } from '../dto/AdminDto';
 @Controller('/auth')
 export class AuthController {
   constructor (
@@ -25,5 +26,11 @@ export class AuthController {
   @Get('/user')
   getMe (@Request() req) {
     return req.user;
+  }
+  @Post('/reg-admin')
+  regAdmin (
+    @Body() body: AdminDto,
+  ) {
+    return this.authService.regAdmin(body);
   }
 }

@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../dto/UserDto';
+import { AdminDto } from '../dto/AdminDto';
 
 @Injectable()
 export class AuthService {
@@ -56,7 +57,6 @@ export class AuthService {
   }
   async register (body: UserDto) {
     const { password, ...securedUser } = body;
-    console.log(body);
     const user = await this.prismaService.user.findUnique({
       where: {
         email: securedUser.email,
@@ -75,4 +75,24 @@ export class AuthService {
     const salt = await bcrypt.genSalt();
     return bcrypt.hash(password, salt);
   }
+  
+  async regAdmin (body: AdminDto) {
+    const { password, email } = body;
+    const admin = await this.prismaService.administrator.findUnique(
+      {
+        where: {
+          email,
+        },
+      },
+    );
+    if (admin) throw new HttpException('Administrator is already exist', HttpStatus.BAD_REQUEST);
+    const hashedPassword = await this.hashPassword(password);
+    const newAdmin = await this.prismaService.administrator.create({
+      data: {
+        password: hashedPassword,
+        email,
+      },
+    });
+    return this.getAccessToken(newAdmin.id);
+  };
 }
