@@ -8,52 +8,51 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(uuid())
-  name         String
-  surname      String
-  patronymic   String?
-  email        String @unique
-  password     String
-  phoneNumber  String @map("phone_number")
-  booking      Booking[]
+  id          String    @id @default(uuid())
+  name        String
+  surname     String
+  patronymic  String?
+  email       String    @unique
+  password    String
+  phoneNumber String    @map("phone_number")
+  booking     Booking[]
 }
 
 model Administrator {
-  id         String  @id @default(uuid())
-  email      String  @unique
-  password   String
-  hotelId    String? @unique
-  hotel      Hotel? @relation(fields: [hotelId], references: [id])
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  hotelId  String? @unique
+  hotel    Hotel?  @relation(fields: [hotelId], references: [id])
 }
 
 model Hotel {
-  id             String  @id @default(uuid())
-  title          String
-  location       String
-  description    String?
-  rooms          Room[]
-  administrator   Administrator?
+  id            String         @id @default(uuid())
+  title         String
+  location      String
+  description   String?
+  rooms         Room[]
+  administrator Administrator?
 }
 
 model Room {
-  id           String  @id @default(uuid())
-  hotelId      String
-  hotel        Hotel   @relation(fields: [hotelId], references: [id])
-  booking      RoomsBookings[]
-  price        Int
-  description  String?
-  rooms        Int
-  beds         Int
+  id          String          @id @default(uuid())
+  hotelId     String
+  hotel       Hotel           @relation(fields: [hotelId], references: [id])
+  booking     RoomsBookings[]
+  price       Int
+  description String?
+  rooms       Int
+  beds        Int
 }
 
-
 model Booking {
-  id           String @id @default(uuid())
+  id           String          @id @default(uuid())
   rooms        RoomsBookings[]
   nights       Int
-  bookingPrice Int @map("booking_price")
+  bookingPrice Int             @map("booking_price")
   userId       String
-  user         User @relation(fields: [userId], references: [id])
+  user         User            @relation(fields: [userId], references: [id])
   startDate    DateTime
   endDate      DateTime
 }

@@ -23,7 +23,7 @@ export class HotelsController {
   }
 
   @Get()
-  getAll (@Query() location: string) {
+  getAll (@Query('location') location: string) {
     return this.hotelsService.findAll(location);
   }
 
