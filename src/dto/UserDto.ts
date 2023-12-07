@@ -6,14 +6,19 @@ export class UserDto {
   })
   @IsEmail()
     email: string;
+
   @IsNotEmpty()
     password: string;
+
   @IsNotEmpty()
     name: string;
+
   @IsNotEmpty()
     surname: string;
+
   @IsOptional()
     patronymic: string;
+
   @IsNotEmpty()
   @IsPhoneNumber()
     phoneNumber: string;

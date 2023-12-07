@@ -23,11 +23,18 @@ export class AuthService {
         email,
       },
     });
+
     const user = client ?? admin;
-    if (!user) throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    if (!user) {
+      throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    }
+
     const comparePassword = bcrypt.compare(password, user.password);
-    if (!comparePassword) throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    if (!comparePassword) {
+      throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    }
     delete user.password;
+
     return user;
   }
 
@@ -42,11 +49,16 @@ export class AuthService {
         id,
       },
     });
+
     const user = client ?? admin;
-    if (!user) throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    if (!user) {
+      throw new UnauthorizedException('Невірна електронна адреса або пароль');
+    }
     delete user.password;
+
     return user;
   }
+
   async getAccessToken (id: string) {
     const payload = {
       sub: id, 
@@ -55,6 +67,7 @@ export class AuthService {
       token: this.jwtService.sign(payload),
     };
   }
+
   async register (body: UserDto) {
     const { password, ...securedUser } = body;
     const user = await this.prismaService.user.findUnique({
@@ -63,6 +76,7 @@ export class AuthService {
       },
     });
     if (user) throw new Error('User already registered');
+
     const hashedPassword = await this.hashPassword(password);
     await this.prismaService.user.create({
       data: {
@@ -71,6 +85,7 @@ export class AuthService {
       },
     });
   }
+
   private async hashPassword (password: string) {
     const salt = await bcrypt.genSalt();
     return bcrypt.hash(password, salt);
@@ -85,7 +100,10 @@ export class AuthService {
         },
       },
     );
-    if (admin) throw new HttpException('Administrator is already exist', HttpStatus.BAD_REQUEST);
+    if (admin) {
+      throw new HttpException('Administrator is already exist', HttpStatus.BAD_REQUEST);
+    }
+
     const hashedPassword = await this.hashPassword(password);
     const newAdmin = await this.prismaService.administrator.create({
       data: {
@@ -93,6 +111,7 @@ export class AuthService {
         email,
       },
     });
+
     return this.getAccessToken(newAdmin.id);
   };
 }

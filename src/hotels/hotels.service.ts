@@ -13,7 +13,10 @@ export class HotelsService {
         title: body.title,
       },
     });
-    if (hotel) throw new HttpException('Hotel is already exist', HttpStatus.BAD_REQUEST);
+    if (hotel) {
+      throw new HttpException('Hotel is already exist', HttpStatus.BAD_REQUEST);
+    }
+
     return this.prismaService.hotel.create({
       data: {
         ...body,
@@ -25,6 +28,7 @@ export class HotelsService {
       },
     });
   }
+
   async createRoom (body: RoomDto, hotelId: string) {
     return this.prismaService.room.create({
       data: {

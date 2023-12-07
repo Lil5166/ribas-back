@@ -6,10 +6,12 @@ export class BookingDto {
   @IsDate()
   @Type(() => Date)
     startDate: Date;
+
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
     endDate: Date;
+
   @IsNotEmpty()
   @IsNumber()
     nights: number;

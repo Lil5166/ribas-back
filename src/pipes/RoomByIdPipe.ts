@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class RoomByIdPipe implements PipeTransform {
   constructor (private readonly prismaService: PrismaService) {}
+
   async transform (roomId: string): Promise<string> {
     const room = await this.prismaService.room.findUnique({
       where: {

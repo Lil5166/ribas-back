@@ -7,8 +7,8 @@ import { RoomByIdPipe } from '../pipes/RoomByIdPipe';
 
 @Controller('/booking')
 export class BookingController {
-  constructor (private readonly bookingService: BookingService) {
-  }
+  constructor (private readonly bookingService: BookingService) {}
+
   @UseGuards(JwtAuthGuard, UserGuard)
   @Post('/:roomId')
   booking (

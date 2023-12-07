@@ -4,8 +4,9 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class HotelByIdPipe implements PipeTransform {
   constructor (private readonly prismaService: PrismaService) {}
+
   async transform (hotelId: string): Promise<string> {
-    const hotel = this.prismaService.hotel.findFirst({
+    const hotel = await this.prismaService.hotel.findFirst({
       where: {
         id: hotelId,
       },

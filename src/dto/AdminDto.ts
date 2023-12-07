@@ -6,6 +6,7 @@ export class AdminDto {
   })
   @IsEmail()
     email: string;
+
   @IsNotEmpty()
     password: string;
 }

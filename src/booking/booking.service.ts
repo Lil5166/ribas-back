@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class BookingService {
   constructor (private readonly prismaService: PrismaService) {}
+
   async booking (body: BookingDto, userId: string, roomId: string) {
     const bookings = await this.prismaService.room.findFirst({
       where: {
@@ -30,14 +31,17 @@ export class BookingService {
         },
       },
     });
-    console.log(bookings);
-    if (bookings) throw new HttpException('Booking with such period is already exist', HttpStatus.BAD_REQUEST);
+    if (bookings) {
+      throw new HttpException('Booking with such period is already exist', HttpStatus.BAD_REQUEST);
+    }
+
     const room = await this.prismaService.room.findFirst({
       where: {
         id: roomId,
       },
     });
     const bookingPrice = body.nights * room.price;
+
     return this.prismaService.booking.create({
       data: {
         ...body,
