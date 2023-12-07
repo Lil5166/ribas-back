@@ -75,7 +75,7 @@ export class AuthService {
         email: securedUser.email,
       },
     });
-    if (user) throw new Error('User already registered');
+    if (user) throw new HttpException('User already registered', HttpStatus.BAD_REQUEST);
 
     const hashedPassword = await this.hashPassword(password);
     await this.prismaService.user.create({
